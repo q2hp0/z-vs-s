@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zenobia &amp; sora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,700;1,800&family=Rajdhani:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#39ff88;
+    --pink:#ff4fa3;
+    --text:#f2f2f2;
+    --display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
+    --cut-l:polygon(0 0, 82% 0, 100% 14%, 100% 100%, 18% 100%, 0 86%);
+    --cut-r:polygon(100% 0, 18% 0, 0 14%, 0 100%, 82% 100%, 100% 86%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    padding:6vh 4vw;
+    font-family:var(--display);
+    font-style:italic;font-weight:700;
+    text-transform:uppercase;
+    color:var(--text);
+    background:#000 url("dis.png") center/cover no-repeat fixed;
+  }
+  .grid-lines{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(to right,rgba(57,255,136,.025) 1px,transparent 1px),
+      linear-gradient(to bottom,rgba(57,255,136,.025) 1px,transparent 1px);
+    background-size:72px 72px;
+  }
+  .layout{
+    position:relative;z-index:1;
+    display:grid;
+    grid-template-columns:160px minmax(0,760px) 160px;
+    align-items:center;
+    gap:36px;
+    width:100%;
+    max-width:1152px;
+  }
+  .card{display:block;text-decoration:none;color:var(--text);--c:var(--green)}
+  .card.sora{--c:var(--pink)}
+  .frame{position:relative;aspect-ratio:3/4;transition:transform .35s ease}
+  .frame::before{
+    content:"";position:absolute;inset:0;
+    background:var(--c);clip-path:var(--cut-l);
+    transform:translate(12px,12px);
+    transition:transform .35s ease;
+  }
+  .frame img{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;display:block;
+    clip-path:var(--cut-l);
+    filter:grayscale(1) contrast(1.05);
+    transition:filter .35s ease;
+  }
+  .card.sora .frame::before{clip-path:var(--cut-r);transform:translate(-12px,12px)}
+  .card.sora .frame img{clip-path:var(--cut-r)}
+  .card:hover .frame{transform:translate(-4px,-4px)}
+  .card.sora:hover .frame{transform:translate(4px,-4px)}
+  .card:hover .frame::before{transform:translate(16px,16px)}
+  .card.sora:hover .frame::before{transform:translate(-16px,16px)}
+  .card:hover .frame img{filter:none}
+  .name{
+    margin-top:26px;
+    font-size:1.6rem;font-weight:800;letter-spacing:.1em;
+    color:var(--c);
+  }
+  .card.sora .name{text-align:right}
+  .versus{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+    column-gap:22px;
+    align-items:center;
+  }
+  .versus h2{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:clamp(2rem,3.5vw,3.55rem);
+    font-style:normal;font-weight:700;line-height:1.02;letter-spacing:.035em;
+    text-transform:uppercase;
+  }
+  .versus h2.software{color:var(--green);text-align:right}
+  .versus h2.systems{color:var(--pink);text-align:left}
+  .vs{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:.82rem;font-weight:700;letter-spacing:.22em;
+    color:var(--text);opacity:.65;padding-left:.22em;
+  }
+  .links{grid-row:2;margin-top:26px}
+  .links.zenobia{grid-column:1;text-align:right;--c:var(--green)}
+  .links.sora{grid-column:3;text-align:left;--c:var(--pink)}
+  .links a,.links .unlinked{
+    display:block;padding:8px 0;
+    color:var(--text);text-decoration:none;
+    font-family:"Rajdhani",sans-serif;
+    font-size:1.08rem;font-weight:600;letter-spacing:.11em;
+    border-bottom:1px solid rgba(255,255,255,.12);
+    transition:color .2s;
+  }
+  .links a:first-child,.links .unlinked:first-child{border-top:1px solid var(--c)}
+  .links a::after{content:" ↗";color:var(--c);font-size:1rem}
+  .links a:hover{color:var(--c)}
+  .links a{transition:color .2s,letter-spacing .2s}
+  .links a:hover{letter-spacing:.16em}
+  .links .unlinked{color:rgba(242,242,242,.58);cursor:default}
+  .links .unlinked::after{content:" ·";color:var(--c)}
+  @media (max-width:1100px){
+    .layout{
+      grid-template-columns:repeat(2,minmax(0,170px));
+      justify-content:center;gap:52px 44px;
+    }
+    .card.zenobia{grid-row:1;grid-column:1}
+    .card.sora{grid-row:1;grid-column:2}
+    .versus{grid-row:2;grid-column:1 / -1;width:min(760px,92vw);justify-self:center}
+  }
+  @media (max-width:560px){
+    body{padding:42px 5vw;align-items:flex-start}
+    .layout{grid-template-columns:repeat(2,minmax(0,130px));gap:42px 28px}
+    .name{font-size:1.35rem;margin-top:20px}
+    .versus{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);column-gap:8px;width:94vw}
+    .versus h2{font-size:clamp(1.45rem,5.8vw,2.25rem)}
+    .vs{font-size:.68rem;letter-spacing:.16em;padding-left:.16em}
+    .links{margin-top:20px}
+    .links a,.links .unlinked{font-size:.94rem;padding:7px 0}
+  }
+</style>
+</head>
+<body>
+<div class="grid-lines"></div>
+<main class="layout">
+  <a class="card zenobia" href="https://github.com/zenobiatranoss" target="_blank" rel="noopener">
+    <div class="frame">
+      <img src="https://github.com/zenobiatranoss.png?size=400" alt="Zenobia" onerror="this.onerror=null;this.src='sv.png'">
+    </div>
+    <div class="name">Zenobia</div>
+  </a>
+
+  <section class="versus">
+    <h2 class="software">Software<br>Dev</h2>
+    <span class="vs">vs</span>
+    <h2 class="systems">Low Level<br>System Dev</h2>
+
+    <nav class="links zenobia" aria-label="Zenobia projects">
+      <a href="https://github.com/zenobiatranoss/go2js" target="_blank" rel="noopener">go2js</a>
+      <a href="https://github.com/zenobiatranoss/wakeline" target="_blank" rel="noopener">wakeline</a>
+      <a href="https://github.com/zenobiatranoss/php2shell" target="_blank" rel="noopener">php2shell</a>
+      <a href="https://github.com/zenobiatranoss/skytrace" target="_blank" rel="noopener">skytrace</a>
+      <a href="https://github.com/zenobiatranoss/tdl-code" target="_blank" rel="noopener">tdl-code</a>
+      <a href="https://github.com/zenobiatranoss/YT-AdBlocker" target="_blank" rel="noopener">YT-AdBlocker</a>
+      <a href="https://github.com/zenobiatranoss/firefox-logger" target="_blank" rel="noopener">firefox-logger</a>
+      <a href="https://github.com/zenobiatranoss/boot-switch" target="_blank" rel="noopener">boot-switch</a>
+      <a href="https://github.com/zenobiatranoss/bloom-atlas" target="_blank" rel="noopener">bloom-atlas</a>
+    </nav>
+
+    <nav class="links sora" aria-label="sora projects">
+      <a href="https://github.com/q2hp0/nova" target="_blank" rel="noopener">nova</a>
+      <a href="https://github.com/q2hp0/ratwatch" target="_blank" rel="noopener">ratwatch</a>
+      <a href="https://github.com/q2hp0/ELFscope" target="_blank" rel="noopener">ELFscope</a>
+      <a href="https://github.com/q2hp0/alansare-cheat" target="_blank" rel="noopener">alansare-cheat</a>
+      <a href="https://github.com/q2hp0/esp_cellular_sim" target="_blank" rel="noopener">esp_cellular_sim</a>
+      <a href="https://github.com/q2hp0/luckyware" target="_blank" rel="noopener">luckyware</a>
+      <a href="https://github.com/q2hp0/dick" target="_blank" rel="noopener">dick</a>
+      <a href="https://q2hp0.github.io/stack-switching/" target="_blank" rel="noopener">stack-switching site</a>
+      <a href="https://q2hp0.github.io/programming-encyclopedia/" target="_blank" rel="noopener">programming encyclopedia</a>
+    </nav>
+  </section>
+
+  <a class="card sora" href="https://github.com/q2hp0" target="_blank" rel="noopener">
+    <div class="frame">
+      <img src="https://github.com/q2hp0.png?size=400" alt="sora" onerror="this.onerror=null;this.src='sora.png'">
+    </div>
+    <div class="name">sora</div>
+  </a>
+</main>
+
+<audio id="song" src="pro.mp3" loop preload="auto"></audio>
+<script>
+  const song = document.getElementById('song');
+  song.volume = 0.12;
+  function startOnInteraction(){
+    const go = () => {
+      song.play().then(() => {
+        ['pointerdown','keydown','touchstart'].forEach(e => removeEventListener(e, go));
+      }).catch(()=>{});
+    };
+    ['pointerdown','keydown','touchstart'].forEach(e => addEventListener(e, go));
+  }
+  song.play().catch(startOnInteraction);
+</script>
+</body>
+</html>
